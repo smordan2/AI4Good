@@ -28,6 +28,7 @@ def prior_prob(full_table, the_column, the_column_value):
 def naive_bayes(full_table, evidence_row, target_column):
   assert target_column in full_table
   assert isinstance(evidence_row, list)
+  assert len(evidence_row) == len(up_list_column_names(full_table)) - 1 
   neg = cond_probs_product(full_table, evidence_row, target_column, 0) * prior_prob(full_table, target_column, 0)
   pos = cond_probs_product(full_table, evidence_row, target_column, 1) * prior_prob(full_table, target_column, 1)
   neg, pos = compute_probs(neg, pos)
