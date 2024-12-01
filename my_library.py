@@ -68,3 +68,15 @@ def metrics(zipped_list):
                      'Accuracy': round(accuracy,2)}
   #finally, return the dictionary
   return four_dictionary
+def run_random_forest(train, test, target, n):
+  assert target in train   #have not dropped it yet
+  assert target in test
+  rf_clf = RandomForestClassifier(n_estimators=n, max_depth=2, random_state=0)   
+  feature = up_drop_column(train, 'adopted')
+  actual = up_get_column(train, 'adopted')
+  rf_clf.fit(feature, actual)
+  k_feature_table = up_drop_column(test, 'adopted')
+  k_actuals = up_get_column(test, 'adopted')
+  probs = rf_clf.predict_proba(k_feature_table)
+
+  return metrics_table
