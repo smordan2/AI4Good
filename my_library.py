@@ -41,10 +41,10 @@ def metrics(zipped_list):
   assert all([float(a) in [0.0,1.0] and float(b) in [0.0,1.0] for a,b in zipped_list]), f'zipped_list contains a non-binary value'
 
   #first compute the sum of all 4 cases. See code above
-  tn = sum([1 if pair==[0,0] else 0 for pair in pred_act_list]) #act list is 400 long
-  tp = sum([1 if pair==[1,1] else 0 for pair in pred_act_list])
-  fp = sum([1 if pair==[1,0] else 0 for pair in pred_act_list])
-  fn = sum([1 if pair==[0,1] else 0 for pair in pred_act_list])
+  tn = sum([1 if pair==[0,0] else 0 for pair in zipped_list]) #act list is 400 long
+  tp = sum([1 if pair==[1,1] else 0 for pair in zipped_list])
+  fp = sum([1 if pair==[1,0] else 0 for pair in zipped_list])
+  fn = sum([1 if pair==[0,1] else 0 for pair in zipped_list])
 
   #now can compute precicision, recall, f1, accuracy. Watch for divide by 0.
   if (tp + fp) == 0 :
