@@ -69,15 +69,30 @@ def metrics(zipped_list):
   #finally, return the dictionary
   return four_dictionary
 def run_random_forest(train, test, target, n):
+  #target is target column name
+  #n is number of trees to use
+
   assert target in train   #have not dropped it yet
   assert target in test
-  rf_clf = RandomForestClassifier(n_estimators=n, max_depth=2, random_state=0)   
-  feature = up_drop_column(train, 'adopted')
-  actual = up_get_column(train, 'adopted')
+
+  #your code below - copy, paste and align from above
+  rf_clf = RandomForestClassifier(n_estimators=n, max_depth=2, random_state=0)
+  feature = up_drop_column(train, target)
+  actual = up_get_column(train, target)
   rf_clf.fit(feature, actual)
-  k_feature_table = up_drop_column(test, 'adopted')
-  k_actuals = up_get_column(test, 'adopted')
-  probs = rf_clf.predict_proba(k_feature_table)
+  probs = rf_clf.predict_proba(up_drop_column(test, target))
+  pos_probs = [p for n,p in probs]
+
+  all_mets = []
+  for t in thresholds:
+    predictions = [1 if pos>t else 0 for pos in pos_probs]
+    pred_act_list = up_zip_lists(predictions, up_get_column(test, target))
+    mets = metrics(pred_act_list)
+    mets['Threshold'] = t
+    all_mets = all_mets + [mets]
+
+  metrics_table = up_metrics_table(all_mets)
+  return metrics_table
 
   return metrics_table
 def try_archs(train_table, test_table, target_column_name, architectures, thresholds):
